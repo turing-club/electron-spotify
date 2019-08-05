@@ -1,12 +1,12 @@
 {
-  "name": "electron-quick-start",
+  "name": "electron-spotify",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A Spotify client that understands you through AI",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/turing-club/electron-spotify",
   "keywords": [
     "Electron",
     "quick",
@@ -14,9 +14,9 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
+  "author": "Turing Club",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^6.0.0"
+    "electron": "https://github.com/castlabs/electron-releases#v6.0.0-wvvmp-beta.8"
   }
 }
