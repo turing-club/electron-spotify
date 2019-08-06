@@ -38,7 +38,7 @@ function createWindow () {
 app.on('ready', () => {
   // Demonstrating with default session, but a custom session object can be used
   app.verifyWidevineCdm({
-    session: mainWindow.defaultSession,
+    session: BrowserWindow.defaultSession,
   });
 
   // Do other early initialization...
