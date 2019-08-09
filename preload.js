@@ -15,3 +15,6 @@ window.addEventListener('DOMContentLoaded', () => {
 const {
   ipcRenderer,
 } = require('electron');
+
+// make global (disable node integration)
+window.ipcRenderer = ipcRenderer;
