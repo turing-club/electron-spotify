@@ -18,7 +18,7 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'renderer.js'),
       nodeIntegration: true,
     }
   });
@@ -54,10 +54,12 @@ app.on('ready', () => {
     if(!registerWindow) {
       // open register window
       registerWindow = new BrowserWindow({
-        file: path.join(__dirname, 'preload.js'),
         width: 500,
         height: 700,
-        parent: mainWindow
+        parent: mainWindow,
+        webPreferences: {
+          preload: path.join(__dirname, 'preload.js'),
+        }
       })
       registerWindow.loadFile('app/register.html');
 
@@ -72,10 +74,12 @@ app.on('ready', () => {
     if(!loginWindow) {
       // open register window
       loginWindow = new BrowserWindow({
-        file: path.join(__dirname, 'preload.js'),
         width: 500,
         height: 700,
-        parent: mainWindow
+        parent: mainWindow,
+        webPreferences: {
+          preload: path.join(__dirname, 'preload.js'),
+        }
       })
       loginWindow.loadFile('app/login.html');
 
