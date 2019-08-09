@@ -1,0 +1,25 @@
+html {
+  font-size: 14px;
+}
+
+/* Reusable Classes */
+
+.c--flex-center {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Components */
+
+.form-signin {
+  margin: 0 auto;
+  max-width: 50vw;
+  padding-top: 10vh;
+  text-align: center;
+}
+
+.button-signin {
+  width: 100%;
+}

@@ -1,6 +1,10 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
+
+// Use electron-reload that allows hot-reloading of browsers when changes are made
+const electron = require('electron')
+require('electron-reload')(__dirname);
 
 app.commandLine.appendSwitch('no-verify-widevine-cdm');
 
@@ -14,15 +18,16 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
     }
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile('app/index.html');
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -41,7 +46,46 @@ app.on('ready', () => {
     session: BrowserWindow.defaultSession,
   });
 
+  let registerWindow;
+  let loginWindow;
+
   // Do other early initialization...
+  ipcMain.on('open-register', () => {
+    if(!registerWindow) {
+      // open register window
+      registerWindow = new BrowserWindow({
+        file: path.join(__dirname, 'preload.js'),
+        width: 500,
+        height: 700,
+        parent: mainWindow
+      })
+      registerWindow.loadFile('app/register.html');
+
+      // cleanup
+      registerWindow.on('closed', () => {
+        registerWindow = null
+      })
+    }
+  })
+
+  ipcMain.on('open-login', () => {
+    if(!loginWindow) {
+      // open register window
+      loginWindow = new BrowserWindow({
+        file: path.join(__dirname, 'preload.js'),
+        width: 500,
+        height: 700,
+        parent: mainWindow
+      })
+      loginWindow.loadFile('app/login.html');
+
+      // cleanup
+      loginWindow.on('closed', () => {
+        loginWindow = null
+      })
+    }
+  })
+
 });
 
 app.on('widevine-ready', (version, lastVersion) => {
