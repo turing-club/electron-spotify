@@ -15,7 +15,6 @@ registerBtn.addEventListener('click', (event) => {
   var fNameField = document.getElementById('register-fname').value;
   var lNameField = document.getElementById('register-lname').value;
 
-  var unameField = document.getElementById('register-uname').value;
   var emailField = document.getElementById('register-email').value;
 
   var pass1Field = document.getElementById('register-pass1').value;
