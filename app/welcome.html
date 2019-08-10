@@ -5,7 +5,7 @@
     <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href=https://unpkg.com/browse/shards-ui@3.0.0/dist/css/shards.min.css">
-    <link rel="stylesheet" type="text/css" href='./static/css/styles.css'>
+    <link rel="stylesheet" type="text/css" href='../static/css/styles.css'>
     <script src="https://kit.fontawesome.com/46946f1b28.js"></script>
     <script href=https://unpkg.com/browse/shards-ui@3.0.0/dist/js/shards.min.js"></script>
 </head>
@@ -16,13 +16,21 @@
 <script src="https://unpkg.com/browse/shards-ui@3.0.0/dist/js/shards.min.js"></script>
 <div class="container mt-3">
     <div class="row">
-        <div class="col-sm mx-auto">
+        <div class="mx-auto card-align">
             <h1>Welcome! Are you ready for a new music listening experience?</h1>
         </div>
     </div>
+    <div class="row row-margin">
+        <div class="col-3">
+            <button type="button" class="btn btn-success btn-pill btn-block">
+                <i class="fab fa-spotify"></i>
+                Login with Spotify
+            </button>
+        </div>
+    </div>
     <div class="row">
-        <div class="col-sm mx-auto">
-            <button type="button" class="btn btn-success btn-pill"><i class="fab fa-spotify"></i>   Login with Spotify</button>
+        <div class="col-3 mt-1">
+            <a href="register.html" class="btn btn-primary btn-pill btn-block">Create a new account</a>
         </div>
     </div>
 </div>

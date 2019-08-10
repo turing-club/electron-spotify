@@ -5,3 +5,13 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.card-align {
+    margin-top: 5em;
+    margin-left: 5em;
+    margin-right: 5em;
+}
+
+.row-margin {
+    margin-top: 5em;
+}

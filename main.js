@@ -11,16 +11,18 @@ let mainWindow;
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
     titleBarStyle: 'hidden',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
   });
 
+  mainWindow.setResizable(false);
+
   // and load the index.html of the app.
-  mainWindow.loadURL('file:///' + __dirname + '/welcome.html');
+  mainWindow.loadURL('file:///' + __dirname + '/app/welcome.html');
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
