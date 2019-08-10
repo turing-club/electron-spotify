@@ -62,6 +62,8 @@ app.on('ready', () => {
       })
       registerWindow.loadFile('app/register.html');
 
+      registerWindow.webContents.openDevTools();
+
       // cleanup
       registerWindow.on('closed', () => {
         registerWindow = null
@@ -81,6 +83,8 @@ app.on('ready', () => {
         }
       })
       loginWindow.loadFile('app/login.html');
+
+      loginWindow.webContents.openDevTools();
 
       // cleanup
       loginWindow.on('closed', () => {

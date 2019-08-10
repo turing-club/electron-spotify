@@ -23,3 +23,8 @@ html {
 .button-signin {
   width: 100%;
 }
+
+
+.t-link {
+  cursor: pointer;
+}

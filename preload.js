@@ -12,9 +12,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
 })
 
+// Your web app's Firebase configuration
+var firebaseConfig = {
+  apiKey: "AIzaSyCxP5aXmO-KCwVAiOXpDQ_AGCOnFw6dgD0",
+  authDomain: "tc-spotify.firebaseapp.com",
+  databaseURL: "https://tc-spotify.firebaseio.com",
+  projectId: "tc-spotify",
+  storageBucket: "",
+  messagingSenderId: "706399573396",
+  appId: "1:706399573396:web:6c3260092d02308c"
+};
+
 const {
   ipcRenderer,
 } = require('electron');
+const remote = require('electron').remote;
 
 // make global (disable node integration)
 window.ipcRenderer = ipcRenderer;
+window.remote = remote;
+window.firebaseConfig = firebaseConfig;
