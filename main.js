@@ -1,6 +1,10 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
+
+// Use electron-reload that allows hot-reloading of browsers when changes are made
+const electron = require('electron')
+require('electron-reload')(__dirname);
 
 app.commandLine.appendSwitch('no-verify-widevine-cdm');
 
@@ -14,15 +18,15 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
     }
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile('login.html');
+  mainWindow.loadFile('app/index.html');
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -40,8 +44,6 @@ app.on('ready', () => {
   app.verifyWidevineCdm({
     session: BrowserWindow.defaultSession,
   });
-
-  // Do other early initialization...
 });
 
 app.on('widevine-ready', (version, lastVersion) => {
