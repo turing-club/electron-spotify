@@ -3,8 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <!-- Shards CSS Dependencies -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/shards-ui@3.0.0/dist/css/shards.min.css">
+    <!-- Include Material Design -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
+    <a class="navbar-brand" href="#">Electron-Spotify</a>
+  </nav>
+
+  <div id="playlist-tab" class="container mt-5">
+    <div class="mt-5 mb-5 row">
+      <h2 class="col">Your Playlists</h2>
+      <div class="col b--generate-playlist"><button type="button" id="playlist-generate"class="btn btn-success">Generate Playlist</button></div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="card" style="width: 18rem;">
+            <div id="playlist-open" class="card-img--hover">
+              <i class="b--open material-icons">open_in_browser</i>
+            </div>
+            <img class="card-img" src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/0994d841602157.57ac63336b606.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title mb-1">Playlist Title</h5>
+              <p class="card-text">Playlist Author</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="songlist-tab"class="container" style="display:none">
+
+    <div class="mt-5">
+      <h2>
+        <i id="redirect-playlists" class="b--back material-icons">keyboard_backspace</i>
+        &nbsp Playlist Name
+      </h2>
+    </div>
+
+    <!-- Not so sure how to repeatedly duplicate this template, except for manually using a 'for' loop? on the GET request -->
+    <div class="songlist__table container mt-5">
+      <table class="table table-borderless table-hover">
+        <tbody>
+          <tr>
+            <th scope="row" class="songlist__table-num">1</th>
+            <td class="songlist__table-img">
+              <img class="songlist__table__img" src=""/></td>
+            <td>
+              <h4 class="songlist__table__title mb-2 font-weight-bold">Song Title</h4>
+              <p class="songlist__table__artist mb-0">Artist Name</p>
+            </td>
+            <td class="songlist__table__album">Album Name</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.js" integrity="sha256-P8jY+MCe6X2cjNSmF4rQvZIanL5VwUUT4MBnOMncjRU=" crossorigin="anonymous"></script>
+  <!-- Include Shards (Bootstrap, Popper, jQuery are dependencies) -->
+  <script
+          src="https://code.jquery.com/jquery-3.4.1.js"
+          integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/shards-ui@3.0.0/dist/js/shards.min.js"></script>
+
+  <script>if (window.module) module = window.module;</script>
+
+  <script src="../renderer.js"></script>
+  <script src="./js/home.js"></script>
 </body>
 </html>
