@@ -1,8 +1,6 @@
 const {app, BrowserWindow} = require('electron');
 const path = require('path');
 
-const electron = require('electron')
-require('electron-reload')(__dirname);
 
 
 app.commandLine.appendSwitch('no-verify-widevine-cdm');

@@ -58,14 +58,16 @@ async function openSpotifyWindow(userID) {
     authWindow.webContents.on('did-redirect-navigation', function (event, newUrl) {
         event.preventDefault();
         console.log(newUrl);
-        if (newUrl.includes('code=')) {
-            let code = newUrl.split('code=')[1];
-            authWindow.close();
-            addCodeToUser(code, userID);
-            window.location.href = "home.html";
-        } else {
-            authWindow.close();
-            sendError();
+        if (newUrl.includes('http://127.0.0.1:8000/setup-success')) {
+            if (newUrl.includes('code=')) {
+                let code = newUrl.split('code=')[1];
+                authWindow.close();
+                addCodeToUser(code, userID);
+                window.location.href = "home.html";
+            } else {
+                authWindow.close();
+                sendError();
+            }
         }
     });
 
