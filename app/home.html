@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://unpkg.com/shards-ui@3.0.0/dist/css/shards.min.css">
     <!-- Include Material Design -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body style="-webkit-app-region: drindex.htmlag">
@@ -18,57 +19,22 @@
     <button type="button" class="navbar-toggler" id="login-reg-button" data-toggle="button" aria-pressed="false" autocomplete="off">
         <a class="register" href="#">Log out</a>
     </button>
-
-    <!-- Playlist buttons -->
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a id="get-playlists-button" class="nav-link login" href="#">My Playlists</a>
-            </li>
-            <li class="nav-item">
-                <a id="generate-playlists-button" class="nav-link register" href="#">Generate Playlists</a>
-            </li>
-        </ul>
-    </div>
 </nav>
 
 <div id="error"></div>
-<div class="container">
-    <div class="row align-items-top">
-        <div class="col-7">
-            <div class="m-5 main-info">
-                <h1>Add cool dashboard features here</h1>
-                <p>THIS IS A TEST PAGE FOR THE DASHBOARD
-                </p>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 <div id="playlist-tab" class="container mt-5">
   <div class="mt-5 mb-5 row">
-    <h2 class="col">Your Playlists</h2>
-    <div class="col b--generate-playlist"><button type="button" id="playlist-generate"class="btn btn-success">Generate Playlist</button></div>
+    <h2 class="col">Your Playlists <i class="b--side material-icons" id="get-playlists-button" >refresh</i></h2>
+    <div class="col b--generate-playlist"><button type="button" id="generate-playlists-button"class="btn btn-success">Generate Playlist</button></div>
   </div>
 
   <div class="container">
-    <div class="row">
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          <div id="playlist-open" class="card-img--hover">
-            <i class="b--open material-icons">open_in_browser</i>
-          </div>
-          <img class="card-img" src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/0994d841602157.57ac63336b606.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title mb-1">Playlist Title</h5>
-            <p class="card-text">Playlist Author</p>
-          </div>
-        </div>
-      </div>
+    <div class="row" id="row-playlist">
+      <!-- To insert playlists (JS) from API call -->
     </div>
   </div>
+
 </div>
 
 <div id="songlist-tab"class="container" style="display:none">

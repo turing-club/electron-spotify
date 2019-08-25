@@ -19,6 +19,14 @@ html {
   transform: scale(1.1);
 }
 
+.b--side {
+  float: unset;
+  cursor: pointer;
+}
+.b--back:hover {
+  transform: scale(1.1);
+}
+
 /* Components */
 .main-info {
   padding-top: 15vh;
@@ -58,6 +66,10 @@ html {
   text-align: right;
 }
 
+.card--playlist {
+  margin-bottom: 5rem;
+  width: 18rem;
+}
 .card-img {
   height: auto;
   object-fit: cover;
