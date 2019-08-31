@@ -3,12 +3,13 @@
 <head >
     <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="stylesheet" href="css/index.css">
+
     <!-- Shards CSS Dependencies -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/shards-ui@3.0.0/dist/css/shards.min.css">
     <!-- Include Material Design -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body style="-webkit-app-region: drindex.htmlag">
@@ -18,32 +19,50 @@
     <button type="button" class="navbar-toggler" id="login-reg-button" data-toggle="button" aria-pressed="false" autocomplete="off">
         <a class="register" href="#">Log out</a>
     </button>
-
-    <!-- Playlist buttons -->
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a id="get-playlists-button" class="nav-link login" href="#">My Playlists</a>
-            </li>
-            <li class="nav-item">
-                <a id="generate-playlists-button" class="nav-link register" href="#">Generate Playlists</a>
-            </li>
-        </ul>
-    </div>
 </nav>
-<div id="error"></div>
-<div class="container">
-    <div class="row align-items-top">
-        <div class="col-7">
-            <div class="m-5 main-info">
-                <h1>Add cool dashboard features here</h1>
-                <p>THIS IS A TEST PAGE FOR THE DASHBOARD
-                </p>
-            </div>
-        </div>
 
+<div id="error"></div>
+
+<div id="playlist-tab" class="container mt-5">
+  <div class="mt-5 mb-5 row">
+    <h2 class="col">Your Playlists <i class="b--side material-icons" id="get-playlists-button" >refresh</i></h2>
+    <div class="col b--generate-playlist"><button type="button" id="generate-playlists-button"class="btn btn-success">Generate Playlist</button></div>
+  </div>
+
+  <div class="container">
+    <div class="row" id="row-playlist">
+      <!-- To insert playlists (JS) from API call -->
     </div>
+  </div>
+
+</div>
+
+<div id="songlist-tab"class="container" style="display:none">
+
+  <div class="mt-5">
+    <h2>
+      <i id="redirect-playlists" class="b--back material-icons">keyboard_backspace</i>
+      &nbsp Playlist Name
+    </h2>
+  </div>
+
+  <!-- Not so sure how to repeatedly duplicate this template, except for manually using a 'for' loop? on the GET request -->
+  <div class="songlist__table container mt-5">
+    <table class="table table-borderless table-hover">
+      <tbody>
+        <tr>
+          <th scope="row" class="songlist__table-num">1</th>
+          <td class="songlist__table-img">
+            <img class="songlist__table__img" src=""/></td>
+          <td>
+            <h4 class="songlist__table__title mb-2 font-weight-bold">Song Title</h4>
+            <p class="songlist__table__artist mb-0">Artist Name</p>
+          </td>
+          <td class="songlist__table__album">Album Name</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
