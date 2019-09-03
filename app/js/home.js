@@ -16,18 +16,17 @@ function setPlaylistButtons() {
 
 function openPlaylist(playlist_id){
   // Hide and show appropriate
-  document.getElementById('songlist-tab-' + playlist_id).style="display:block";
-  document.getElementById('playlist-tab').style="display:none";
+  document.getElementById('songlist-tab-' + playlist_id).style.display='block';
+  document.getElementById('playlist-tab').style.display='none';
 }
 
 function closePlaylist(){
   // Hide and show appropriate
-  document.getElementById('playlist-tab').style="display:block";
+  document.getElementById('playlist-tab').style.display='block';
   var songlist = document.getElementsByClassName('songlist-tab');
   for (var i = 0; i < songlist.length; i++) {
       songlist[i].style.display = 'none';
   }
-
 }
 
 function clearPlaylist() {
