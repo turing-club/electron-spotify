@@ -47,7 +47,7 @@ function setTracks(data, playlist_id) {
 
     for (i = 0; i < data.playlist_tracks.length; i++) {
         var track = data.playlist_tracks[i].track;
-        console.log(track);
+        // console.log(track);
         var song_row = document.createElement('tr');
         var song_row_num = document.createElement('th');
         song_row_num.setAttribute('class', 'songlist__table__num');
@@ -57,7 +57,12 @@ function setTracks(data, playlist_id) {
         song_img_wrapper.setAttribute('class', 'songlist__table__img');
         var song_img = document.createElement('img');
         song_img.setAttribute('class', 'songlist__table__img');
-        song_img.setAttribute('src', track.album.images[0].url);
+        try {
+            song_img.setAttribute('src', track.album.images[0].url);
+        }
+        catch (error) {
+            console.error(error);
+        }
         var song_info = document.createElement('td');
         var song_title = document.createElement('h4');
         song_title.setAttribute('class', 'songlist__table__title mb-2 font-weight-bold');
@@ -85,7 +90,13 @@ function setTracks(data, playlist_id) {
 function loadPlaylist(data) {
   // Get data from JSON
   var title = data.name.toString();
-  var imageurl = data.images[0].url;
+  try {
+      var imageurl = data.images[0].url;
+  }
+  catch (error) {
+      console.error(error);
+  }
+  console.log(data);
   var author = data.owner.display_name;
 
 
@@ -130,7 +141,7 @@ function loadPlaylist(data) {
   var songlist_table = document.createElement('table');
   songlist_table.setAttribute('class', 'table table-borderless table-hover');
   songlist_table.setAttribute('id', 'songlist_table_' + data.id.toString());
-  console.log('songlist_table_' + data.id);
+  // console.log('songlist_table_' + data.id);
   songlist_table_div.appendChild(songlist_table);
 
   var songlist_tab = document.createElement('div');
@@ -184,7 +195,7 @@ document.getElementById('get-playlists-button').addEventListener('click', (e) =>
             user_id: userID,
         },
         success: function (result_playlist) {
-            console.log("Retreived playlists: ", result_playlist);
+            // console.log("Retreived playlists: ", result_playlist);
             clearPlaylist();
             for( let i = 0; i < result_playlist.playlists.length; i++ ) {
                 loadPlaylist(result_playlist.playlists[i]);
@@ -207,7 +218,7 @@ function get_songs_by_playlist(playlist_id) {
             playlist_id: playlist_id,
         },
         success: function (result) {
-            // console.log("Retreived songs: ", result);
+            console.log("Retreived songs: ", result);
             setTracks(result, playlist_id);
         }
     });
