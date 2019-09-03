@@ -51,8 +51,8 @@ html {
 }
 
 .songlist__table__img {
-  max-height: 5em;
-  max-width: 5em;
+  height: 4em;
+  width: 4em;
 }
 
 .songlist__table-num {
@@ -95,4 +95,11 @@ html {
 }
 .b--open {
   font-size: 100px !important;
+}
+.redir-wrap {
+
+}
+
+.songlist-tab {
+
 }

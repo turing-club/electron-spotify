@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="./css/index.css">
 </head>
 
-<body style="-webkit-app-region: drindex.htmlag">
+<body style="-webkit-app-region: drindex.htmlag" id="body_tag">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
     <a class="navbar-brand" href="#">Electron-Spotify</a>
@@ -37,34 +37,35 @@
 
 </div>
 
-<div id="songlist-tab"class="container" style="display:none">
+<!--<div id="songlist-tab" class="container" style="display:none">-->
 
-  <div class="mt-5">
-    <h2>
-      <i id="redirect-playlists" class="b--back material-icons">keyboard_backspace</i>
-      &nbsp Playlist Name
-    </h2>
-  </div>
+<!--  <div class="mt-5">-->
+<!--    <h2>-->
+<!--      <i id="redirect-playlists" class="b&#45;&#45;back material-icons">keyboard_backspace</i>-->
+<!--      &nbsp Playlist Name-->
+<!--    </h2>-->
+<!--  </div>-->
 
   <!-- Not so sure how to repeatedly duplicate this template, except for manually using a 'for' loop? on the GET request -->
-  <div class="songlist__table container mt-5">
-    <table class="table table-borderless table-hover">
-      <tbody>
-        <tr>
-          <th scope="row" class="songlist__table-num">1</th>
-          <td class="songlist__table-img">
-            <img class="songlist__table__img" src=""/></td>
-          <td>
-            <h4 class="songlist__table__title mb-2 font-weight-bold">Song Title</h4>
-            <p class="songlist__table__artist mb-0">Artist Name</p>
-          </td>
-          <td class="songlist__table__album">Album Name</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<!--  <div class="songlist__table container mt-5">-->
+<!--    <table class="table table-borderless table-hover">-->
+<!--      <tbody id="table_songs">-->
+<!--        <tr>-->
+<!--          <th scope="row" class="songlist__table-num">1</th>-->
+<!--          <td class="songlist__table-img">-->
+<!--            <img class="songlist__table__img" src=""/></td>-->
+<!--          <td>-->
+<!--            <h4 class="songlist__table__title mb-2 font-weight-bold">Song Title</h4>-->
+<!--            <p class="songlist__table__artist mb-0">Artist Name</p>-->
+<!--          </td>-->
+<!--          <td class="songlist__table__album">Album Name</td>-->
+<!--        </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
+<!--</div>-->
 
+</body>
 <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.js" integrity="sha256-P8jY+MCe6X2cjNSmF4rQvZIanL5VwUUT4MBnOMncjRU=" crossorigin="anonymous"></script>
 <!-- Include Shards (Bootstrap, Popper, jQuery are dependencies) -->
@@ -80,5 +81,4 @@
 
 <script src="../renderer.js"></script>
 <script src="js/home.js"></script>
-</body>
 </html>
