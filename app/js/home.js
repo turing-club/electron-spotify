@@ -6,6 +6,15 @@ document.addEventListener('click', function (event) {
     }
 });
 
+// Navigation to generate-playlists.html throws error when in that file since element does not
+// exist in that file, which will reuse most of this JS -db
+try {
+    document.getElementById('generate-playlists-button').addEventListener("click", function(){
+        window.location.href = "generate-playlists.html";
+    });    
+}
+catch {}
+
 function setPlaylistButtons() {
     document.addEventListener('click', function (event) {
         if (event.target.matches('.playlist-open')) {
