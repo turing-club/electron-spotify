@@ -13,7 +13,7 @@ document.addEventListener('click', function (event) {
 try {
     document.getElementById('generate-playlists-button').addEventListener("click", function(){
         window.location.href = "generate-playlists.html";
-    });    
+    });
 }
 catch {}
 
@@ -55,7 +55,7 @@ function setTracks(data, playlist_id) {
     }
     var song_table = document.createElement('tbody');
     song_table.setAttribute('id', 'table_songs_' + playlist_id.toString());
-    console.log(data.playlist_tracks);
+    // console.log(data.playlist_tracks);
 
     for (i = 0; i < data.playlist_tracks.length; i++) {
         var track = data.playlist_tracks[i].track;
@@ -73,7 +73,9 @@ function setTracks(data, playlist_id) {
             song_img.setAttribute('src', track.album.images[0].url);
         }
         catch (error) {
-            console.error(error);
+            // console.error(error);
+            console.log("Error loading thumbnail for song: ", track.name);
+            song_img.setAttribute('src', '../assets/defaultsong.png');
         }
         var song_info = document.createElement('td');
         var song_title = document.createElement('h4');
@@ -106,9 +108,11 @@ function loadPlaylist(data) {
       var imageurl = data.images[0].url;
   }
   catch (error) {
-      console.error(error);
+      // console.error(error);
+      console.log("Error loading thumbnail for playlist: ", title);
+      var imageurl = '../assets/defaultplaylist.png';
   }
-  console.log(data);
+  // console.log(data);
   var author = data.owner.display_name;
 
 
@@ -167,7 +171,7 @@ function loadPlaylist(data) {
   redirect_wrapper.appendChild(redirect_wrapper_h2);
   var redirect_wrapper_i = document.createElement('i');
   redirect_wrapper_i.setAttribute('id', 'redirect-playlists' + data.id.toString());
-  redirect_wrapper_i.setAttribute('class', 'rb--back material-icons redir-wrap');
+  redirect_wrapper_i.setAttribute('class', 'b--back material-icons redir-wrap');
   redirect_wrapper_i.appendChild(document.createTextNode('keyboard_backspace'));
   redirect_wrapper_h2.appendChild(redirect_wrapper_i);
   redirect_wrapper_h2.appendChild(document.createTextNode(title));
@@ -230,7 +234,7 @@ function get_songs_by_playlist(playlist_id) {
             playlist_id: playlist_id,
         },
         success: function (result) {
-            console.log("Retreived songs: ", result);
+            // console.log("Retreived songs: ", result);
             setTracks(result, playlist_id);
         }
     });
