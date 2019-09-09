@@ -49,14 +49,14 @@
         <div class="row">
           <div class="col-3">
             <div class="list-group" id="list-tab" role="tablist">
-              <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Name</a>
-              <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Select Playlists</a>
-              <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Select Songs</a>
+              <a class="list-group-item list-group-item-action active" id="playlist-settings-btn" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Name</a>
+              <a class="list-group-item list-group-item-action" id="playlist-playlists-btn" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Select Playlists</a>
+              <a class="list-group-item list-group-item-action" id="playlist-songs-btn" data-toggle="list" href="#playlist-songs" role="tab" aria-controls="settings">Select Songs</a>
             </div>
           </div>
           <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+              <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="playlist-settings">
                   <div class="form-group row">
                       <label for="name_playlist" class="col-sm-4 col-form-label h5">Name of Playlist:</label>
                       <div class="col-sm-10">
@@ -70,7 +70,7 @@
                     </div>
                   </div>
               </div>
-              <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+              <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="playlist-playlists">
                 <div class="row">
                   <div class="col"><h4>Selected Playlists:</h4></div>
                   <div class="col-2">
@@ -78,15 +78,23 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="container" id="track-list">
+                  <ul class="list-group" id="playlist-list">
                     <!-- List of Playlists Shows Up Here-->
 
-                  </div>
+                  </ul>
                 </div>
               </div>
-              <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+              <div class="tab-pane fade row" id="playlist-songs" role="tabpanel" aria-labelledby="playlist-songs">
                 playlist picture on the left side and track list on right side. next to each track have the rating.
-
+                <div id="playlist-header">
+                    one bar with the playlist name, arrows on both sides to cycle
+                </div>
+                <div class="container" id="songlist">
+                  <div id='song' class='row'>
+                    <div class="col-6" id="song-name">songname</div>
+                    <div class="col-2" id="song-rating">rating</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
