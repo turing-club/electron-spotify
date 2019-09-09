@@ -1,3 +1,9 @@
+document.getElementById('logout-button').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    window.location.href = "index.html";
+});
+
 const playlistDiv = document.getElementById('row-playlist');
 
 document.addEventListener('click', function (event) {
@@ -60,6 +66,9 @@ function setTracks(data, playlist_id) {
     for (i = 0; i < data.playlist_tracks.length; i++) {
         var track = data.playlist_tracks[i].track;
         // console.log(track);
+
+        if (track.is_local) continue;  // prevent local songs from being loaded
+
         var song_row = document.createElement('tr');
         var song_row_num = document.createElement('th');
         song_row_num.setAttribute('class', 'songlist__table__num');
@@ -114,7 +123,6 @@ function loadPlaylist(data) {
   }
   // console.log(data);
   var author = data.owner.display_name;
-
 
   // console.log(title, " ", author, " ", imageurl);
   var playlist_col = document.createElement('div');
@@ -184,8 +192,6 @@ function loadPlaylist(data) {
 
   playlist_col.appendChild(playlist_card);
   playlistDiv.appendChild(playlist_col);
-
-
 }
 
 function generatePlaylist(userID) {
@@ -203,24 +209,7 @@ function generatePlaylist(userID) {
 
 document.getElementById('get-playlists-button').addEventListener('click', (e) => {
     e.preventDefault();
-    userID = localStorage.getItem('userID');
-    $.ajax({
-        type: 'GET',
-        url: "http://127.0.0.1:8000/api/get-playlists",
-        data: {
-            user_id: userID,
-        },
-        success: function (result_playlist) {
-            // console.log("Retreived playlists: ", result_playlist);
-            clearPlaylist();
-            for( let i = 0; i < result_playlist.playlists.length; i++ ) {
-                loadPlaylist(result_playlist.playlists[i]);
-                get_songs_by_playlist(result_playlist.playlists[i].id);
-            }
-            setPlaylistButtons();
-        }
-    });
-
+    initialize();
     return false;
 });
 
@@ -241,3 +230,26 @@ function get_songs_by_playlist(playlist_id) {
     return false;
 
 }
+
+function initialize() {
+    userID = localStorage.getItem('userID');
+    $.ajax({
+        type: 'GET',
+        url: "http://127.0.0.1:8000/api/get-playlists",
+        data: {
+            user_id: userID,
+        },
+        success: function (result_playlist) {
+            // console.log("Retreived playlists: ", result_playlist);
+            clearPlaylist();
+            for( let i = 0; i < result_playlist.playlists.length; i++ ) {
+                loadPlaylist(result_playlist.playlists[i]);
+                get_songs_by_playlist(result_playlist.playlists[i].id);
+            }
+            setPlaylistButtons();
+        }
+    });
+    return false;
+}
+
+window.onload = initialize;
