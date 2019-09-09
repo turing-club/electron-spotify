@@ -71,6 +71,7 @@ document.getElementById('proceed-button').addEventListener("click", function(){
         data: {
             user_id: userID,
         },
+        // TEMPORARY OBTAINING OF STUFF
         success: function (result_playlists) {
             console.log("Retreived playlists: ", result_playlists);
 
@@ -162,6 +163,7 @@ function createFullStar(id, starIndex, index) {
 
 document.getElementById('list-messages-list').addEventListener("click", listPlaylist);
 
+// Empties the Playlist List such that the button does not continually append playlists
 function clearPlaylist() {
     while (playlistDiv.firstChild) {
       playlistDiv.removeChild(playlistDiv.firstChild);
@@ -191,7 +193,7 @@ function listPlaylist() {
         }
     });
 }
-
+// Handles what happens when you select or deselect a playlist on the Select Playlists screen
 function selectClick(event) {
     event.preventDefault();
     // console.log(event.srcElement.parentElement.dataset.playlistid);
