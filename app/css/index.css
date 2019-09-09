@@ -2,6 +2,10 @@ html {
   font-size: 14px;
 }
 
+.material-icons.md-14 { font-size: 14px; }
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-btn { cursor: pointer; }
+
 /* Reusable Classes */
 
 .c--flex-center {
@@ -62,9 +66,15 @@ html {
 .songlist__table-img {
   width: 6em;
 }
+.songlist__table__rating {
+  min-width: 12em;
+}
 
 .b--right {
   text-align: right;
+}
+.t--center {
+  text-align: center;
 }
 
 .card--playlist {
@@ -109,4 +119,35 @@ html {
 
 .choice--highlighted {
   background: lightblue;
+}
+
+.bg--black {
+  background: white;
+}
+
+.playlist-carousel {
+  height: 70vh;
+}
+
+.songlist-table-wrapper {
+  height: 100%;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+}
+.songlist-rating-choice {
+  background: #ccc;
+  height: 70vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.noscroll {
+  overflow-y: hidden;
+}
+.carousel-table {
+  display: block;
+  font-size: 0.75em;
+  margin: 10% auto;
+  margin-top: 0;
+  max-width: 75%;
 }
