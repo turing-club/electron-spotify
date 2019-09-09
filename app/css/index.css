@@ -20,8 +20,8 @@ html {
 }
 
 .b--side {
-  float: unset;
   cursor: pointer;
+  float: unset;
 }
 .b--side:hover {
   transform: scale(1.1);
@@ -63,7 +63,7 @@ html {
   width: 6em;
 }
 
-.b--generate-playlist {
+.b--right {
   text-align: right;
 }
 
@@ -99,5 +99,14 @@ html {
 }
 
 .playlist-choice {
+  height: 30vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.playlist-choice__img {
+  max-height: 1em;
+}
 
+.choice--highlighted {
+  background: lightblue;
 }
