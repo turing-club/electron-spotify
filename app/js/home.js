@@ -217,7 +217,7 @@ function get_songs_by_playlist(playlist_id) {
         user_id: userID,
         playlist_id: playlist_id,
       },
-      success: function (result) {
+      success: async function (result) {
         // console.log("Retreived songs: ", result);
         loadTracks(result, playlist_id);
       }
@@ -237,7 +237,7 @@ function initialize() {
         data: {
             user_id: userID,
         },
-        success: function (result_playlists) {
+        success: async function (result_playlists) {
             // console.log("Retreived playlists: ", result_playlist);
             clearPlaylist();
             for( let i = 0; i < result_playlists.playlists.length; i++ ) {

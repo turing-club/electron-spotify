@@ -57,7 +57,7 @@ document.getElementById('proceed-button').addEventListener("click", function(){
             playlist_ids: playlist_array,
             number_songs: num_songs
         },
-        success: function(result) {
+        success: async function(result) {
             console.log(result);
         }
     });
@@ -72,7 +72,7 @@ document.getElementById('proceed-button').addEventListener("click", function(){
             user_id: userID,
         },
         // TEMPORARY OBTAINING OF STUFF
-        success: function (result_playlists) {
+        success: async function (result_playlists) {
             console.log("Retreived playlists: ", result_playlists);
 
             for ( let i = 0; i < result_playlists.playlists.length; i++ ) {
@@ -83,7 +83,7 @@ document.getElementById('proceed-button').addEventListener("click", function(){
                   user_id: userID,
                   playlist_id: result_playlists.playlists[i].id,
                 },
-                success: function (result_songlist) {
+                success: async function (result_songlist) {
                   // console.log("Retreived songs: ", result_songlist);
                   loadCarouselItem(result_playlists.playlists[i], result_songlist.playlist_tracks, result_playlists.playlists.length);
                 }
@@ -179,7 +179,7 @@ function listPlaylist() {
         data: {
             user_id: userID,
         },
-        success: function (result_playlists) {
+        success: async function (result_playlists) {
             // console.log(result_playlist);
             if (selectedPlaylists) {
               if (selectedPlaylists.length !== result_playlists.playlists.length)
