@@ -15,8 +15,8 @@
 <body style="-webkit-app-region: drindex.htmlag">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-    <a class="navbar-brand" href="#">Electron-Spotify</a>
-    <button type="button" class="navbar-toggler" id="login-reg-button" data-toggle="button" aria-pressed="false" autocomplete="off">
+    <a class="navbar-brand" href="./home.html">Electron-Spotify</a>
+    <button type="button" class="navbar-toggler" id="logout-button" data-toggle="button" aria-pressed="false" autocomplete="off">
         <a class="register" href="#">Log out</a>
     </button>
 </nav>
@@ -26,7 +26,7 @@
 <div id="playlist-tab" class="container mt-5">
   <div class="mt-5 mb-5 row">
     <h2 class="col">Generate a Playlist!</h2>
-    <div class="col b--generate-playlist"><button type="button" id="my-playlists-button"class="btn btn-success">Back</button></div>
+    <div class="col b--right"><button type="button" id="my-playlists-button"class="btn btn-warning">Back</button></div>
   </div>
 
   <div class="container" id="setup-playlist">
@@ -49,22 +49,21 @@
         <div class="row">
           <div class="col-3">
             <div class="list-group" id="list-tab" role="tablist">
-              <a class="list-group-item list-group-item-action active" id="playlist-settings-btn" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Name</a>
-              <a class="list-group-item list-group-item-action" id="playlist-playlists-btn" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Select Playlists</a>
-              <a class="list-group-item list-group-item-action" id="playlist-songs-btn" data-toggle="list" href="#playlist-songs" role="tab" aria-controls="settings">Select Songs</a>
+              <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Name</a>
+              <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Select Playlists</a>
             </div>
           </div>
           <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
               <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="playlist-settings">
                   <div class="form-group row">
-                      <label for="name_playlist" class="col-sm-4 col-form-label h5">Name of Playlist:</label>
+                      <label for="name_playlist" class="ml-3 col-form-label h5">Name of Playlist:</label>
                       <div class="col-sm-10">
                         <input type="email" class="form-control" id="name_playlist" placeholder="Cheezey Doritos LP">
                       </div>
                     </div>
                 <div class="form-group row">
-                    <label for="num_songs" class="col-sm-4 col-form-label h5">Number of Songs:</label>
+                    <label for="num_songs" class="ml-3 col-form-label h5">Number of Songs:</label>
                     <div class="col-sm-10">
                       <input type="email" class="form-control" id="num_songs" placeholder="lots">
                     </div>
@@ -73,29 +72,20 @@
               <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="playlist-playlists">
                 <div class="row">
                   <div class="col"><h4>Selected Playlists:</h4></div>
-                  <div class="col-2">
-                    <button class="btn" id="get-playlists-button" type="button" data-toggle="collapse" data-target="#row-playlist" aria-expanded="false" aria-controls="collapseExample">X of Y Playlists</button>
-                  </div>
                 </div>
-                <div class="row">
-                  <ul class="list-group" id="playlist-list">
-                    <!-- List of Playlists Shows Up Here-->
+                <div class="playlist-choice">
+                  <table class="table table-borderless table-hover">
+                    <tbody id="playlist-choice-list">
 
-                  </ul>
+                    </tbody>
+                  </table>
                 </div>
               </div>
-              <div class="tab-pane fade row" id="playlist-songs" role="tabpanel" aria-labelledby="playlist-songs">
+              <!-- </div>
+              <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
                 playlist picture on the left side and track list on right side. next to each track have the rating.
-                <div id="playlist-header">
-                    one bar with the playlist name, arrows on both sides to cycle
-                </div>
-                <div class="container" id="songlist">
-                  <div id='song' class='row'>
-                    <div class="col-6" id="song-name">songname</div>
-                    <div class="col-2" id="song-rating">rating</div>
-                  </div>
-                </div>
-              </div>
+
+              </div> -->
             </div>
           </div>
         </div>
@@ -103,10 +93,26 @@
 
 
       </div>
-
       <div class="row">
-        <div class="col m-3 b--generate-playlist"><button type="button" id="proceed-button"class="btn btn-success">Next: machine learning OoO</button></div>
+        <div class="col m-3 b--right"><button type="button" id="proceed-button"class="btn btn-success">Next: Rate Songs!</button></div>
       </div>
+
+  </div>
+
+  <div class="container" id="rate-playlist" style="display:none">
+    <div id="playlist-carousel-wrapper" class="carousel slide" data-ride="carousel" data-interval="false">
+      <div id="playlist-carousel" class="carousel-inner noscroll">
+
+      </div>
+      <a class="carousel-control-prev" href="#playlist-carousel-wrapper" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#playlist-carousel-wrapper" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
   </div>
 
 

@@ -1,229 +1,317 @@
-// Navigation:
+// Variables
+var title;
+var numSongs;
+var selectedPlaylists;
+var ratingInformation = {};
+
+const carouselDiv = document.getElementById('playlist-carousel');
+const playlistDiv = document.getElementById('playlist-choice-list');
+
+// NAVIGATION BUTTONS
+////////////////////////////////////////
+
+document.getElementById('logout-button').addEventListener('click', (e) => {
+  e.preventDefault();
+  localStorage.clear();
+  window.location.href = "index.html";
+});
+
 document.getElementById('my-playlists-button').addEventListener("click", function(){
     window.location.href = "home.html";
 });
+
 document.getElementById('proceed-button').addEventListener("click", function(){
-    console.log("machine learning step");
-});
+    var num_songs = document.getElementById('num_songs').value
+    if (!num_songs) {
+      alert("Please enter a number of songs!");
+      window.location.href = "generate-playlists.html"; // reload page
+      return;
+    } // User must enter number of songs
+    if (!selectedPlaylists) {
+      alert("Please choose at least one playlist!");
+      document.getElementById('list-messages-list').click(); // redirect
+      return;
+    } // User must choose at least one playlist
 
+    let playlist_array = arrayFilter(selectedPlaylists);
 
+    let playlist_title = document.getElementById('name_playlist').value;
+    if (playlist_title) title = playlist_title;
+    else title = "Untitled Playlist";
 
-// Recreating Clarence's work to get the playlist data but not in a card view
-document.getElementById('get-playlists-button').addEventListener('click', (e) => {
-    e.preventDefault();
+    console.log("Rate Songs for Playlist:", title, "!");
+    console.log("Filtered List: ", playlist_array);
+
+    document.getElementById('rate-playlist').style.display = "block";
+    document.getElementById('setup-playlist').style.display = "none";
+
     userID = localStorage.getItem('userID');
-    console.log('hello');
+
+    // API Call not working yet (forbidden)
+    /*
+    $.ajax({
+        type: 'POST',
+        url: "http://127.0.0.1:8000/api/choose-songs-to-rate",
+        data: {
+            user_id: userID,
+            playlist_ids: playlist_array,
+            number_songs: num_songs
+        },
+        success: async function(result) {
+            console.log(result);
+        }
+    });
+    */
+
+    // TEMPORARY DATA
+
     $.ajax({
         type: 'GET',
         url: "http://127.0.0.1:8000/api/get-playlists",
         data: {
             user_id: userID,
         },
-        success: function (result_playlist) {
-            console.log(result_playlist);
-            clearPlaylistList();
-            listPlaylists(result_playlist);
+        // TEMPORARY OBTAINING OF STUFF
+        success: async function (result_playlists) {
+            console.log("Retreived playlists: ", result_playlists);
+
+            for ( let i = 0; i < result_playlists.playlists.length; i++ ) {
+              $.ajax({
+                type: 'GET',
+                url: "http://127.0.0.1:8000/api/get-songs-by-playlist",
+                data: {
+                  user_id: userID,
+                  playlist_id: result_playlists.playlists[i].id,
+                },
+                success: async function (result_songlist) {
+                  // console.log("Retreived songs: ", result_songlist);
+                  loadCarouselItem(result_playlists.playlists[i], result_songlist.playlist_tracks, result_playlists.playlists.length);
+                }
+              });
+            }
         }
     });
+
 });
 
-// Generates an List of the Playlists given the API data for "api/get-playlists"
-function listPlaylists(result_playlist){
-    var track_list = document.getElementById('playlist-list');
-    
-    for( let i = 1; i < result_playlist.playlists.length; i++) {
-        // Name of the Playlist in the list of playlists
-        var playlist = result_playlist.playlists[i].name;
-        var playlist_id = result_playlist.playlists[i].id;
-        
-        // Creating the HTML Elements
-        var list_element = track_list.appendChild(document.createElement("div"));
-        var playlist_name = list_element.appendChild(document.createElement("button"));
-        
-        // Button Attributes:
-        playlist_name.setAttribute('class', "btn btn-light col");
-        playlist_name.setAttribute('id', playlist_id);
-        playlist_name.setAttribute('name-data', playlist);
-        playlist_name.textContent = playlist;
-        // Button Formatting:
-        playlist_name.setAttribute('type', "button");
-        playlist_name.setAttribute('data-toggle', "button");
-        playlist_name.setAttribute('aria-pressed', "false");
-        playlist_name.setAttribute('autocomplete', "off");
+// MISC
+////////////////////////////////////////
 
-        // console.log(playlist_name);
-        //listPlaylistsSelectHelper(result_playlist, playlist_name)
-        playlist_name.addEventListener('click', handleClickEvent);
-        
+function arrayFilter(array) {
+    var newArray = [];
+    for (var i = 0; i < array.length; i++ ) {
+      if (array[i] !== "") newArray.push(array[i]);
     }
+    return newArray;
 }
 
-// Handles what happens when you select or deselect a playlist on the Select Playlists screen
-function handleClickEvent(event){
-    var status = event.target.getAttributeNode('aria-pressed').value;
-    var playlist_id = event.target.getAttributeNode('id').value;
-    var playlist_name = event.target.getAttributeNode('name-data').value;
-    if(status == 'false'){
-        // add it to the list
-        console.log(status);
-        console.log('open + ' + playlist_name);
-        var header_content = document.getElementById('playlist-header').appendChild(document.createElement('div'));
-        header_content.setAttribute('id', playlist_id);
-        header_content.setAttribute('class', "btn btn-light col");
-        header_content.textContent = playlist_name;
+function rate(event) {
+
+    // Star Display
+    var id = event.srcElement.dataset.id;
+    var index = event.srcElement.dataset.index;
+    var starIndex = event.srcElement.dataset.sindex;
+    var parent = event.srcElement.parentElement;
+    console.log("Song number", index, "in album", id, "rated:", starIndex, "stars!");
+
+    while(parent.firstChild) {
+      parent.removeChild(parent.firstChild);
     }
-    else{
-        // remove it from the list
-        console.log(status);
-        console.log("close + " + playlist_name);
-        //playlist_id.remove();
-        //playlist_id.outerHTML = "";
+    var i = 0;
+    while(i <= starIndex) {
+      let star = createFullStar(id, i, index);
+      parent.appendChild(star);
+      i++;
     }
+    while(i < 5) {
+      let star = createEmptyStar(id, i, index);
+      parent.appendChild(star);
+      i++;
+    }
+
+    // Save rating data
+    ratingInformation[id][index] = eval(parseInt(starIndex)+1);
+    // console.log("Rating for album ", id, " updated: " ratingInformation[id]);
+
+    return false;
 }
 
-function addHeader(){
-    var playlist_header = document.getElementById('playlist-songs');
-    playlist_name
-
+function createEmptyStar(id, starIndex, index) {
+    var star = document.createElement('span');
+    star.setAttribute('class', 'material-icons md-18 md-btn');
+    star.setAttribute('data-id', id);
+    star.setAttribute('data-index', index);
+    star.setAttribute('data-sindex', starIndex);
+    star.appendChild(document.createTextNode('star_border'));
+    star.addEventListener("click", rate);
+    return star;
 }
 
+function createFullStar(id, starIndex, index) {
+    var star = document.createElement('span');
+    star.setAttribute('class', 'material-icons md-18 md-btn');
+    star.setAttribute('data-id', id);
+    star.setAttribute('data-index', index);
+    star.setAttribute('data-sindex', starIndex);
+    star.appendChild(document.createTextNode('star'));
+    star.addEventListener("click", rate);
+    return star;
+}
 
+// GENERATE
+////////////////////////////////////////
 
+document.getElementById('list-messages-list').addEventListener("click", listPlaylist);
 
 // Empties the Playlist List such that the button does not continually append playlists
-function clearPlaylistList(){
-    var playlist_list = document.getElementById('playlist-list');
-    while (playlist_list.firstChild) {
-        //The list is LIVE so it will re-index each call
-        playlist_list.removeChild(playlist_list.firstChild);
+function clearPlaylist() {
+    while (playlistDiv.firstChild) {
+      playlistDiv.removeChild(playlistDiv.firstChild);
     }
-}    
+}
 
-
-// 
-function get_songs_by_playlist(playlist_id) {
+// List all playlists into playlist_choice_list
+function listPlaylist() {
     userID = localStorage.getItem('userID');
     $.ajax({
         type: 'GET',
-        url: "http://127.0.0.1:8000/api/get-songs-by-playlist",
+        url: "http://127.0.0.1:8000/api/get-playlists",
         data: {
             user_id: userID,
-            playlist_id: playlist_id,
         },
-        success: function (result) {
-            // console.log("Retreived songs: ", result);
-            setTracks(result, playlist_id);
+        success: async function (result_playlists) {
+            // console.log(result_playlist);
+            if (selectedPlaylists) {
+              if (selectedPlaylists.length !== result_playlists.playlists.length)
+                selectedPlaylists = new Array(result_playlists.playlists.length).fill("");
+            }
+            else selectedPlaylists = new Array(result_playlists.playlists.length).fill("");
+            clearPlaylist();
+              for( let i = 0; i < result_playlists.playlists.length; i++ ) {
+                loadPlaylist(result_playlists.playlists[i], i);
+              }
         }
     });
-    return false;
+}
+// Handles what happens when you select or deselect a playlist on the Select Playlists screen
+function selectClick(event) {
+    event.preventDefault();
+    // console.log(event.srcElement.parentElement.dataset.playlistid);
+    var isElement = event.srcElement.parentElement.className.includes('playlist_element');
+    var isHighlighted = event.srcElement.parentElement.className.includes('choice--highlighted');
 
+    if(!isElement) return;
+    var playlist_id = event.srcElement.parentElement.id.replace('playlist-','');
+    if(isHighlighted) {
+      selectedPlaylists[event.srcElement.parentElement.dataset.playlistid] = "";
+      event.srcElement.parentElement.setAttribute('class', 'playlist_element mb-0');
+    }
+    else {
+      selectedPlaylists[event.srcElement.parentElement.dataset.playlistid] = playlist_id;
+      event.srcElement.parentElement.setAttribute('class', 'playlist_element mb-0 choice--highlighted');
+    }
+    // console.log(selectedPlaylists);
 }
 
-function addPlaylist(data, playlist_id){
-    var playlists = document.getElementById('playlist-list');
+// Generates an Unordered List of the Playlists given the API data for "api/get-playlists"
+function loadPlaylist(data, index){
+      // Name of the Playlist in the list of playlists
+    var playlist_title = data.name;
+
+    // Creating the HTML Elements
+    var list_element = playlistDiv.appendChild(document.createElement("tr"));
+    var playlist_img = list_element.appendChild(document.createElement("td"));
+    var playlist_img__img = playlist_img.appendChild(document.createElement("img"));
+    var playlist_name = list_element.appendChild(document.createElement("td"));
+
+    playlist_name.textContent = playlist_title;
+
+    try {
+      playlist_img__img.setAttribute('src', data.images[0].url);
+    }
+    catch (error) {
+      console.log("Error loading thumbnail for song: ", data.name);
+      playlist_img__img.setAttribute('src', '../assets/defaultsong.png');
+    }
+    playlist_img__img.setAttribute('class', 'playlist-choice__img');
+
+
+    // Asserting Class and ID attributes to each element
+    if( selectedPlaylists[index] ) list_element.setAttribute('class', 'playlist_element mb-0 choice--highlighted');
+    else list_element.setAttribute('class', 'playlist_element mb-0');
+    list_element.setAttribute('data-playlistid', index);
+    list_element.setAttribute('id', 'playlist-' + data.id);
+    list_element.addEventListener("click", selectClick);
+
+    playlistDiv.appendChild(list_element);
 }
 
+function loadCarouselItem(playlist, songlist, totalPlaylist) {
+    var indicator_index = carouselDiv.childElementCount;
+    var playlistname = playlist.id;
 
-function showSongs(data, playlist_id){
+    var carousel_item = document.createElement('div');
+    var carousel_body = carousel_item.appendChild(document.createElement('div'));
+    var carousel_bodywrapper = carousel_body.appendChild(document.createElement('div'));
+    var carousel_description = carousel_bodywrapper.appendChild(document.createElement('h5'));
+    var carousel_body_t = carousel_bodywrapper.appendChild(document.createElement('table'));
+    var carousel_body_table = carousel_body_t.appendChild(document.createElement('tbody'));
 
-}
-/*
-// Clarence's SetTracks
-function setTracks(data, playlist_id) {
+    if(indicator_index == 0) carousel_item.setAttribute('class', 'carousel-item active');
+    else carousel_item.setAttribute('class', 'carousel-item');
+    carousel_body.setAttribute('class', 'songlist-rating-choice noscroll');
+    carousel_bodywrapper.setAttribute('class', 'songlist-table-wrapper');
+    carousel_description.appendChild(document.createTextNode("Rating: Playlist " + eval(indicator_index+1) + " of " + totalPlaylist))
+    carousel_description.setAttribute('class', 't--center mt-5 mb-4');
+    carousel_body_t.setAttribute('class', 'table table-borderless table-hover carousel-table');
 
-    var song_table_wrapper = document.getElementById('songlist_table_' + playlist_id.toString());
-    while (song_table_wrapper.firstChild) {
-        song_table_wrapper.removeChild(song_table_wrapper.firstChild);
+    ratingInformation[playlistname] = new Array(songlist.length);
+
+    for (let i = 0; i < songlist.length; i++) {
+      var songitem = document.createElement('tr');
+      var song_row_num = songitem.appendChild(document.createElement('th'));
+      var song_info = songitem.appendChild(document.createElement('td'));
+      var song_info_title = song_info.appendChild(document.createElement('h6'));
+      var song_info_more = song_info.appendChild(document.createElement('p'));
+      var song_rating = songitem.appendChild(document.createElement('td'));
+
+      song_row_num.setAttribute('class', 'songlist__table__num');
+      song_row_num.setAttribute('scope', 'row');
+      song_row_num.appendChild(document.createTextNode(i));
+      song_info_title.setAttribute('class', 'songlist__table__title mb-2 font-weight-bold');
+      song_info_title.appendChild(document.createTextNode(songlist[i].track.name));
+      song_info_more.setAttribute('class', 'songlist__table__artist mb-0');
+      song_info_more.appendChild(document.createTextNode(songlist[i].track.artists[0].name + " - " + songlist[i].track.album.name));
+
+      song_rating.setAttribute('class', 'songlist__table__rating');
+
+      for (let j = 0; j < 5; j++) {
+        let star = createEmptyStar(playlist.id, j, i);
+        song_rating.appendChild(star);
+      }
+
+      carousel_body_table.appendChild(songitem);
+
+      ratingInformation[playlistname][i] = 0; // Initialize rating
     }
 
-    var song_table = document.getElementById('playlist-songs').createElement('tbody');
-    song_table.setAttribute('id', 'table_songs_' + playlist_id.toString());
-    // console.log(data.playlist_tracks);
+    carouselDiv.appendChild(carousel_item);
 
-    for (i = 0; i < data.playlist_tracks.length; i++) {
-        var track = data.playlist_tracks[i].track;
-        // console.log(track);
-        var song_row = document.createElement('tr');
-        var song_row_num = document.createElement('th');
-        song_row_num.setAttribute('class', 'songlist__table__num');
-        song_row_num.setAttribute('scope', 'row');
-        song_row_num.appendChild(document.createTextNode(i));
-        var song_img_wrapper = document.createElement('td');
-        song_img_wrapper.setAttribute('class', 'songlist__table__img');
-        var song_img = document.createElement('img');
-        song_img.setAttribute('class', 'songlist__table__img');
-        try {
-            song_img.setAttribute('src', track.album.images[0].url);
-        }
-        catch (error) {
-            // console.error(error);
-            console.log("Error loading thumbnail for song: ", track.name);
-            song_img.setAttribute('src', '../assets/defaultsong.png');
-        }
-        var song_info = document.createElement('td');
-        var song_title = document.createElement('h4');
-        song_title.setAttribute('class', 'songlist__table__title mb-2 font-weight-bold');
-        song_title.appendChild(document.createTextNode(track.name));
-        var song_artist = document.createElement('p');
-        song_artist.setAttribute('class', 'songlist__table__artist mb-0');
-        song_artist.appendChild(document.createTextNode(track.artists[0].name));
-        var song_album = document.createElement('td');
-        song_album.setAttribute('class', 'songlist__table__album');
-        song_album.appendChild(document.createTextNode(track.album.name));
+    // console.log(ratingInformation);
 
-        song_row.appendChild(song_row_num);
-        song_img_wrapper.appendChild(song_img);
-        song_row.appendChild(song_img_wrapper);
-        song_info.appendChild(song_title);
-        song_info.appendChild(song_artist);
-        song_row.appendChild(song_info);
-        song_row.appendChild(song_album);
+  /* <li data-target="#playlist-carousel-wrapper" data-slide-to="0" class="active"></li> */
+  /*
+  <div class="carousel-item active">
+    <div class="songlist-rating-choice">
+      <table class="table table-borderless table-hover">
+        <tbody id="playlist-choice-list">
 
-        song_table.appendChild(song_row);
-    }
-    song_table_wrapper.appendChild(song_table);
-}
-
-
-
-*/
-
-//  reference:
-//
-// Reference Only: (not called) Brandon's Code for Adding HTML Elements
-function add_track(track, device_id, i) {
-    if (track !== undefined) {
-        //console.log(device_id);
-        client_id = device_id.toString();
-        
-        var track_list = document.getElementById('playlist-list');
-        var track_obj_div = document.createElement("a");
-        var track_obj_row = document.createElement("div");
-        var track_obj_name_col = document.createElement("div");
-        var track_obj_artist_col = document.createElement("div");
-        var track_obj_id = document.createElement("div");
-        
-        track_obj_div.setAttribute('class', 'list-group-item');
-        track_obj_div.setAttribute('id', 'track-item' + i);
-        track_obj_div.createTextNode(track)
-        
-        track_obj_row.setAttribute('class', 'row');
-        track_obj_row.setAttribute('id', 'track-row');
-        
-        track_obj_name_col.setAttribute('class', 'col-xs-6 col-sm-6 col-md-6 col-lg-6');
-        track_obj_artist_col.setAttribute('class', 'col-xs-6 col-sm-6 col-md-6 col-lg-6');
-        
-        track_obj_id.setAttribute('id', track.uri);
-        track_obj_id.setAttribute('class', 'empty');
-        
-        var track_obj_name = document.createElement("track-object-name");
-        track_obj_name.setAttribute('id', track.name);
-        track_obj_name.appendChild(document.createTextNode(track.name));
-        track_obj_name_col.appendChild(track_obj_name);
-        track_obj_row.appendChild(track_obj_name_col);
-        
-        // append the div to the bottom of the list
-        track_list.appendChild(track_obj_div);
-        track_obj_div.setAttribute('onclick', 'select_track(this, client_id)');
-    }
+        </tbody>
+      </table>
+    </div>
+    <div class="carousel-caption d-none d-md-block">
+      <h5>First slide label</h5>
+    </div>
+  </div>
+  */
 }
