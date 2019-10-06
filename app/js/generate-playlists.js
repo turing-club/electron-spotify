@@ -48,9 +48,11 @@ document.getElementById('proceed-button').addEventListener("click", function(){
     userID = localStorage.getItem('userID');
 
     // API Call not working yet (forbidden)
-    /*
+
+    playlist_array = JSON.stringify({'songs': playlist_array});
+
     $.ajax({
-        type: 'POST',
+        type: 'GET',
         url: "http://127.0.0.1:8000/api/choose-songs-to-rate",
         data: {
             user_id: userID,
@@ -59,39 +61,11 @@ document.getElementById('proceed-button').addEventListener("click", function(){
         },
         success: async function(result) {
             console.log(result);
+            for ( let i = 0; i < result.playlists.length; i++ ) {
+                loadCarouselItem(result.playlists[i], result.playlist_tracks[i], result.playlists.length);
+                    };
         }
     });
-    */
-
-    // TEMPORARY DATA
-
-    $.ajax({
-        type: 'GET',
-        url: "http://127.0.0.1:8000/api/get-playlists",
-        data: {
-            user_id: userID,
-        },
-        // TEMPORARY OBTAINING OF STUFF
-        success: async function (result_playlists) {
-            console.log("Retreived playlists: ", result_playlists);
-
-            for ( let i = 0; i < result_playlists.playlists.length; i++ ) {
-              $.ajax({
-                type: 'GET',
-                url: "http://127.0.0.1:8000/api/get-songs-by-playlist",
-                data: {
-                  user_id: userID,
-                  playlist_id: result_playlists.playlists[i].id,
-                },
-                success: async function (result_songlist) {
-                  // console.log("Retreived songs: ", result_songlist);
-                  loadCarouselItem(result_playlists.playlists[i], result_songlist.playlist_tracks, result_playlists.playlists.length);
-                }
-              });
-            }
-        }
-    });
-
 });
 
 // MISC
