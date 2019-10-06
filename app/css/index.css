@@ -137,7 +137,7 @@ html {
 }
 .songlist-rating-choice {
   background: #ccc;
-  height: 70vh;
+  min-height: 60vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -145,9 +145,12 @@ html {
   overflow-y: hidden;
 }
 .carousel-table {
-  display: block;
+  display: table;
   font-size: 0.75em;
   margin: 10% auto;
   margin-top: 0;
   max-width: 75%;
+}
+.carousel-control-next {
+  right: 15px;
 }

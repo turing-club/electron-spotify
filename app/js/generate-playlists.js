@@ -42,12 +42,7 @@ document.getElementById('proceed-button').addEventListener("click", function(){
     console.log("Rate Songs for Playlist:", title, "!");
     console.log("Filtered List: ", playlist_array);
 
-    document.getElementById('rate-playlist').style.display = "block";
-    document.getElementById('setup-playlist').style.display = "none";
-
     userID = localStorage.getItem('userID');
-
-    // API Call not working yet (forbidden)
 
     playlist_array = JSON.stringify({'songs': playlist_array});
 
@@ -59,11 +54,21 @@ document.getElementById('proceed-button').addEventListener("click", function(){
             playlist_ids: playlist_array,
             number_songs: num_songs
         },
+        beforeSend: function() {
+          document.getElementById('setup-playlist').style.display = "none";
+          document.getElementById('loading-spinner').style.display = "flex";
+          document.getElementById('rate-playlist').style.display = "none";
+        },
+        complete: function() {
+          document.getElementById('setup-playlist').style.display = "none";
+          document.getElementById('loading-spinner').style.display = "none";
+          document.getElementById('rate-playlist').style.display = "block";
+        },
         success: async function(result) {
             console.log(result);
             for ( let i = 0; i < result.playlists.length; i++ ) {
                 loadCarouselItem(result.playlists[i], result.playlist_tracks[i], result.playlists.length);
-                    };
+            };
         }
     });
 });
