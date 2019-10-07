@@ -4,7 +4,8 @@
   "description": "A Spotify client that understands you through AI",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "startd": "electron --no-sandbox ."
   },
   "repository": "https://github.com/turing-club/electron-spotify",
   "keywords": [
