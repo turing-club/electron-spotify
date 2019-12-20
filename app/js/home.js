@@ -65,6 +65,16 @@ function clearPlaylist() {
     }
 }
 
+function setProfile(data) {
+    var profile_pic = document.getElementById('spotify-profile-pic');
+    var profile_pic_img = profile_pic.appendChild(document.createElement("img"));
+    profile_pic_img.setAttribute('src', data[1]);
+    profile_pic_img.setAttribute('width', '50');
+    profile_pic_img.setAttribute('class', 'clip-circle');
+    var display_name = document.getElementById('spotify-name');
+    display_name.appendChild(document.createTextNode(data[0]))
+}
+
 // PLAYLIST/SONGS LOAD AND PRINT
 ////////////////////////////////////////
 
@@ -168,6 +178,7 @@ function loadTracks(data, playlist_id) {
         if (track.is_local) continue;  // prevent local songs from being loaded
 
         var song_row = document.createElement('tr');
+        song_row.setAttribute('id', track.uri);
         var song_row_num = document.createElement('th');
         song_row_num.setAttribute('class', 'songlist__table__num');
         song_row_num.setAttribute('scope', 'row');
@@ -202,10 +213,16 @@ function loadTracks(data, playlist_id) {
         song_info.appendChild(song_artist);
         song_row.appendChild(song_info);
         song_row.appendChild(song_album);
-
         song_table.appendChild(song_row);
     }
     song_table_wrapper.appendChild(song_table);
+    for (i = 0; i < data.playlist_tracks.length; i++) {
+        var track = data.playlist_tracks[i].track;
+        track_name = track.name.split('spotify:track:')[1];
+        // document.getElementById(track.uri).addEventListener('click', (e) => {
+        //     getSong(track.uri, track.name, track.album.name, track.artists[0].name);
+        // });
+    }
 }
 
 function get_songs_by_playlist(playlist_id) {
@@ -245,6 +262,76 @@ function initialize() {
                 get_songs_by_playlist(result_playlists.playlists[i].id);
             }
             setPlaylistButtons();
+            getProfile();
+        }
+    });
+    return false;
+}
+
+function getProfile() {
+    userID = localStorage.getItem('userID');
+    $.ajax({
+        type: 'GET',
+        url: "http://127.0.0.1:8000/api/get-profile",
+        data: {
+            user_id: userID,
+        },
+        success: async function (result_profile) {
+            let data = ['Cool person', '../assets/defaultuser.png'];
+            try {
+                let data = [result_profile.name, result_profile.pic];
+                setProfile(data);
+            }
+            catch(error) {
+                console.log("Cannot get profile pic!");
+                setProfile(data);
+            }
+        }
+    });
+    return false;
+}
+
+function play_pause(song, choice) {
+    userID = localStorage.getItem('userID');
+    $.ajax({
+        type: 'GET',
+        url: ("http://127.0.0.1:8000/api/").concat(choice),
+        data: {
+            user_id: userID,
+            track_uri: song,
+        },
+        success: async function (data) {
+            let play_button = document.getElementById("play-pause-button");
+            play_button.setAttribute('url', choice.concat('.png'));
+        }
+    });
+    return false;
+}
+
+// NOTE: Playback functionality not working yet because the build of Spotipy we're using
+// doesn't have that feature - we could switch to another Spotipy build such as
+// https://github.com/felix-hilden/spotipy
+function getSong(song, song_name, album, artist) {
+    userID = localStorage.getItem('userID');
+    $.ajax({
+        type: 'GET',
+        url: "http://127.0.0.1:8000/api/get-song",
+        data: {
+            user_id: userID,
+            track_uri: song,
+        },
+        success: async function (track) {
+            let song_info = document.getElementById('song-info');
+            let song_name = document.createElement('song-name');
+            let album = document.createElement('album');
+            let artist = document.createElement('artist');
+            song_name.appendChild(document.createTextNode(song_name));
+            album.appendChild(document.createTextNode(album));
+            artist.appendChild(document.createTextNode(artist));
+            song_info.appendChild(song_name);
+            song_info.appendChild(album);
+            song_info.appendChild(artist);
+            play_pause(song, "play");
         }
     });
     return false;

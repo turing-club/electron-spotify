@@ -154,3 +154,6 @@ html {
 .carousel-control-next {
   right: 15px;
 }
+.clip-circle {
+  clip-path: circle(20px at center);
+}
