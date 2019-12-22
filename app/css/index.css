@@ -157,3 +157,9 @@ html {
 .clip-circle {
   clip-path: circle(20px at center);
 }
+
+.navbar-nav.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translatex(-50%);
+}

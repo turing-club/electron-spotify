@@ -3,6 +3,31 @@
 ////////////////////////////////////////
 
 const playlistDiv = document.getElementById('row-playlist');
+const client_id = 'baa5f3746bf74710bf3f6b18926993db';
+
+window.onSpotifyPlayerAPIReady = () => {
+    userID = localStorage.getItem('userID');
+    token = localStorage.getItem('token');
+    console.log(token);
+    const player = new Spotify.Player({
+        name: 'Turing',
+        getOAuthToken: cb => {
+            cb(token);
+        }
+    });
+    // Ready
+    player.on('initialization_error', e => console.error(e));
+    player.on('authentication_error', e => console.error(e));
+    player.on('account_error', e => console.error(e));
+    player.on('playback_error', e => console.error(e));
+    player.on('ready', data => {
+        console.log('Ready with Device ID', data.device_id);
+        localStorage.setItem('device_id', data.device_id);
+    });
+
+    // Connect to the player!
+    player.connect();
+};
 
 document.getElementById('logout-button').addEventListener('click', (e) => {
     e.preventDefault();
@@ -219,9 +244,11 @@ function loadTracks(data, playlist_id) {
     for (i = 0; i < data.playlist_tracks.length; i++) {
         var track = data.playlist_tracks[i].track;
         track_name = track.name.split('spotify:track:')[1];
-        // document.getElementById(track.uri).addEventListener('click', (e) => {
-        //     getSong(track.uri, track.name, track.album.name, track.artists[0].name);
-        // });
+        device_id = localStorage.getItem('device_id');
+        document.getElementById(track.uri).addEventListener('click', (e) => {
+            // play(device_id, track.uri);
+            // getSong(device_id, track.uri, track.name, track.album.name, track.artists[0].name);
+        });
     }
 }
 
@@ -261,6 +288,7 @@ function initialize() {
                 loadPlaylist(result_playlists.playlists[i]);
                 get_songs_by_playlist(result_playlists.playlists[i].id);
             }
+            getToken();
             setPlaylistButtons();
             getProfile();
         }
@@ -302,7 +330,7 @@ function play_pause(song, choice) {
         },
         success: async function (data) {
             let play_button = document.getElementById("play-pause-button");
-            play_button.setAttribute('url', choice.concat('.png'));
+            play_button.appendChild(document.createTextNode('play_circle_filled'));
         }
     });
     return false;
@@ -310,8 +338,39 @@ function play_pause(song, choice) {
 
 // NOTE: Playback functionality not working yet because the build of Spotipy we're using
 // doesn't have that feature - we could switch to another Spotipy build such as
-// https://github.com/felix-hilden/spotipy
-function getSong(song, song_name, album, artist) {
+
+function getToken() {
+    userID = localStorage.getItem('userID');
+    $.ajax({
+        type: 'GET',
+        url: "http://127.0.0.1:8000/api/get-token",
+        data: {
+            user_id: userID,
+        },
+        success: async function (data) {
+            console.log(data);
+            localStorage.setItem('token', data.token);
+        }
+    });
+    return false;
+}
+
+// Testing alternative music player function
+function play(device_id, track_id) {
+    $.ajax({
+        url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
+        type: "PUT",
+        data: '{"uris": ["' + track_id + '"]}',
+        beforeSend: function(xhr){
+            var token = localStorage.getItem('token');
+            xhr.setRequestHeader('Authorization', 'Bearer ' + token );},
+        success: function(data) {
+            console.log(data);
+        }
+    });
+}
+
+function getSong(device_id, song, song_name, album, artist) {
     userID = localStorage.getItem('userID');
     $.ajax({
         type: 'GET',
@@ -319,19 +378,20 @@ function getSong(song, song_name, album, artist) {
         data: {
             user_id: userID,
             track_uri: song,
+            device_id: device_id,
         },
         success: async function (track) {
             let song_info = document.getElementById('song-info');
-            let song_name = document.createElement('song-name');
-            let album = document.createElement('album');
-            let artist = document.createElement('artist');
-            song_name.appendChild(document.createTextNode(song_name));
-            album.appendChild(document.createTextNode(album));
-            artist.appendChild(document.createTextNode(artist));
-            song_info.appendChild(song_name);
-            song_info.appendChild(album);
-            song_info.appendChild(artist);
-            play_pause(song, "play");
+            let song_name_div = document.createElement('song-name');
+            let album_div = document.createElement('album');
+            let artist_div = document.createElement('artist');
+            song_name_div.appendChild(document.createTextNode(song_name));
+            album_div.appendChild(document.createTextNode(album));
+            artist_div.appendChild(document.createTextNode(artist));
+            song_info.appendChild(song_name_div);
+            song_info.appendChild(album_div);
+            song_info.appendChild(artist_div);
+            // play_pause(song, "play");
         }
     });
     return false;

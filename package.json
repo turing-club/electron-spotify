@@ -18,9 +18,10 @@
   "author": "Turing Club",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "https://github.com/castlabs/electron-releases.git#v6.0.0-wvvmp-beta.8"
+    "electron": "https://github.com/castlabs/electron-releases#v7.0.0-wvvmp"
   },
   "dependencies": {
-    "all": "0.0.0"
+    "all": "0.0.0",
+    "electron": "https://github.com/castlabs/electron-releases#v7.0.0-wvvmp"
   }
 }

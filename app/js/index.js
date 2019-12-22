@@ -1,6 +1,7 @@
 'use strict';
 
 const { BrowserWindow } = require('electron').remote;
+var scopes = 'user-read-private user-read-email streaming user-modify-playback-state';
 let csrftoken = Cookies.get('csrftoken');
 $.ajaxSetup({
     beforeSend: function(xhr, settings) {
@@ -10,9 +11,9 @@ $.ajaxSetup({
 
 
 $(document).on("click", ".register", function(event){
-  let status = document.getElementById('login-reg-button');
-  status.innerHTML='<a class="login" href="#">Login</a>';
-  showForm('login');
+    let status = document.getElementById('login-reg-button');
+    status.innerHTML='<a class="login" href="#">Login</a>';
+    showForm('login');
 });
 
 $(document).on("click", ".login", function(event){
@@ -23,14 +24,14 @@ $(document).on("click", ".login", function(event){
 
 // Function to Show or Hide the login/register forms on the landing page
 function showForm(status){
-  if (status === 'login'){
-    document.getElementById('register-form').style="display:block";
-    document.getElementById('login-form').style="display:none";
-  }
-  else {
-    document.getElementById('login-form').style="display:block";
-    document.getElementById('register-form').style="display:none";
-  }
+    if (status === 'login'){
+        document.getElementById('register-form').style="display:block";
+        document.getElementById('login-form').style="display:none";
+    }
+    else {
+        document.getElementById('login-form').style="display:block";
+        document.getElementById('register-form').style="display:none";
+    }
 }
 
 function sendError() {
@@ -50,7 +51,8 @@ async function openSpotifyWindow(userID) {
         'node-integration': false,
         'web-security': false
     });
-    let authUrl = 'https://accounts.spotify.com/authorize?response_type=code&client_id=baa5f3746bf74710bf3f6b18926993db&redirect_uri=http://127.0.0.1:8000/setup-success';
+    let authUrl = 'https://accounts.spotify.com/authorize?response_type=code&client_id=baa5f3746bf74710bf3f6b18926993db' + (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+        '&redirect_uri=http://127.0.0.1:8000/setup-success';
 
     await authWindow.loadURL(authUrl);
     authWindow.show();
@@ -61,6 +63,7 @@ async function openSpotifyWindow(userID) {
         if (newUrl.includes('http://127.0.0.1:8000/setup-success')) {
             if (newUrl.includes('code=')) {
                 let code = newUrl.split('code=')[1];
+                code = code.split('#')[0];
                 authWindow.close();
                 addCodeToUser(code, userID);
                 window.location.href = "home.html";
@@ -92,9 +95,9 @@ function addCodeToUser(code, userID) {
 
 document.getElementById('register-form-button').addEventListener('click', (e) => {
     e.preventDefault();
-   let username = document.getElementById('register-username').value;
-   let password = document.getElementById('register-password').value;
-   let email = document.getElementById('register-email').value;
+    let username = document.getElementById('register-username').value;
+    let password = document.getElementById('register-password').value;
+    let email = document.getElementById('register-email').value;
     $.ajax({
         type: 'POST',
         url: "http://127.0.0.1:8000/api/register",
@@ -113,7 +116,7 @@ document.getElementById('register-form-button').addEventListener('click', (e) =>
             }
         }
     });
-   return false;
+    return false;
 });
 
 document.getElementById('login-form-button').addEventListener('click', (e) => {

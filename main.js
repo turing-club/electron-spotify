@@ -1,8 +1,6 @@
 const {app, BrowserWindow} = require('electron');
 const path = require('path');
 
-
-
 app.commandLine.appendSwitch('no-verify-widevine-cdm');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -16,7 +14,8 @@ function createWindow () {
         height: 800,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: true
+            nodeIntegration: true,
+            plugins: true
         }
     });
 
@@ -48,7 +47,6 @@ app.on('ready', () => {
 });
 
 app.on('widevine-ready', (version, lastVersion) => {
-    console.log(version);
     if (null !== lastVersion) {
         console.log('Widevine ' + version + ', upgraded from ' + lastVersion + ', is ready to be used!');
     } else {
